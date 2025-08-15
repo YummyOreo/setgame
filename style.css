@@ -60,3 +60,8 @@
 .active {
     outline: black 4px solid;
 }
+
+.stats {
+    display: flex;
+    gap: 2rem;
+}

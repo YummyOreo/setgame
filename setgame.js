@@ -103,6 +103,26 @@ let activeList = {};
 
 let sets = 0;
 
+var secs = 0;
+var mins = 0;
+var paused = false;
+
+document.getElementById("pause").addEventListener("click", () => {
+    paused = !paused;
+    document.getElementById("pause").innerHTML = paused ? "resume" : "pause";
+})
+
+var stopwatch = setInterval(function(){
+    if (paused) {return;}
+    secs++;
+    if (secs == 60) {
+        mins++;
+        secs = 0;
+    }
+
+    document.getElementById('time').innerHTML= String(mins).padStart(2, '0') + ":" + String(secs).padStart(2, '0'); ;
+}, 1000);
+
 generateCards();
 randomizeCards();
 updateStats()
@@ -144,6 +164,12 @@ function updateStats() {
     cardsLeft.textContent = "Cards remaining: " + (cards.length - index);
 }
 
+const statusEl = document.querySelector(".status");
+
+function updateStatus(status) {
+    statusEl.innerHTML = !status ? "Not a set" : "Set found!";
+}
+
 function removeCards(keys) {
     for (let key in keys) {
         key = keys[key];
@@ -176,11 +202,14 @@ function handleClick(e) {
             });
             let keys = Object.keys(activeList);
             if (checkSet(list)) {
+                updateStatus(true);
                 if (winCheck()) {
                     document.querySelector(".setgame").innerHTML = "<h2>You Win!</h2>";
+                    clearInterval(stopwatch);
                 }
                 removeCards(keys)
             } else {
+                updateStatus(false);
                 for (let key in keys) {
                     key = keys[key];
                     let el = activeList[key];
