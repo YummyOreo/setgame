@@ -37,7 +37,7 @@ class Card {
         text = "S";
     }
 
-    text = text * this.number;
+    text = text.repeat(this.number);
     el.textContent = text;
     return el;
   }
@@ -95,4 +95,17 @@ function randomizeCards() {
 generateCards();
 randomizeCards();
 
-document.querySelector("#first .first").appendChild(cards[0].display());
+let rows = document.querySelectorAll(".row");
+let index = 0;
+
+for (let i = 0; i < rows.length; i++) {
+    const row = rows[i];
+    const columns = row.children;
+    for (let b = 0; b < columns.length; b++) {
+        const item = columns[b];
+        const el = cards[index].display();
+        el.setAttribute("index", index);
+        item.appendChild(cards[index].display());
+        index = index + 1;
+    }
+}
