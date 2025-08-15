@@ -6,23 +6,57 @@
 
 .row {
     display: flex;
-    gap: 1rem;
+    gap: 3rem;
+    margin-bottom: 3rem;
 }
 
 .row .card {
     width: 4rem;
     height: 5rem;
     text-align: center;
+    color: white;
+}
+
+.card p {
+    height: calc(100% - 6px);
+    margin: 0 0;
+    font-size: 1.5rem;
+    user-select: none;
 }
 
 .red {
     background-color: red;
+    border-color: red;
+    border-width: 3px;
+    border-style: solid;
 }
 
 .blue {
     background-color: blue;
+    border-color: blue;
+    border-width: 3px;
+    border-style: solid;
 }
 
 .green {
     background-color: green;
+    border-color: green;
+    border-width: 3px;
+    border-style: solid;
+}
+
+.lined {
+    border-style: dashed;
+    background-color: white;
+    color: black;
+}
+
+.open {
+    background-color: white;
+    color: black;
+}
+
+.card:hover,
+.active {
+    outline: black 4px solid;
 }
