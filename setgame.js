@@ -113,7 +113,7 @@ document.getElementById("pause").addEventListener("click", () => {
 })
 
 var stopwatch = setInterval(function(){
-    if (paused) {return;}
+    if (paused || document.hidden) {return;}
     secs++;
     if (secs == 60) {
         mins++;
@@ -191,6 +191,7 @@ function winCheck() {
 }
 
 function handleClick(e) {
+    if (paused || document.hidden) {return;}
     const el = e.target;
     const index = el.getAttribute("index");
     el.classList.toggle("active")
