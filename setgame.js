@@ -125,7 +125,6 @@ var stopwatch = setInterval(function(){
 
 generateCards();
 randomizeCards();
-updateStats()
 
 function checkProperty(list) {
     const left = list[0] == list[1];
@@ -238,3 +237,5 @@ for (let i = 0; i < rows.length; i++) {
         index = index + 1;
     }
 }
+
+updateStats();
