@@ -101,7 +101,7 @@ let index = 0;
 
 let activeList = {};
 
-let sets = 0;
+let setsFound = 0;
 
 var secs = 0;
 var mins = 0;
@@ -160,7 +160,7 @@ function checkSet(list) {
 }
 
 function updateStats() {
-    setsElement.textContent = "Sets found: " + sets;
+    setsElement.textContent = "Sets found: " + setsFound;
     cardsLeft.textContent = "Cards remaining: " + (cards.length - index);
 }
 
@@ -182,7 +182,7 @@ function removeCards(keys) {
         index++;
         delete activeList[key];
     }
-    sets++;
+    setsFound++;
     updateStats()
 }
 
