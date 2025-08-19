@@ -1,3 +1,5 @@
+const displayTemplate = `<svg class="COLOR OPEN" width="38" height="76" viewBox="0 0 200 400" style="transition: width 0.5s, height 0.5s;"><use href="#SHAPE" mask="FILL"></use><use href="#SHAPE" fill="none" stroke-width="18"></use></svg>`
+
 const Color = {
     RED: 'red',
     GREEN: 'green',
@@ -5,9 +7,9 @@ const Color = {
 };
 
 const Shape = {
-    DIAMOND: 0,
-    SQUIGLE: 1,
-    OVAL: 2,
+    DIAMOND: 'diamond',
+    SQUIGLE: 'squiggle',
+    OVAL: 'oval',
 }
 
 const Fill = {
@@ -25,21 +27,22 @@ class Card {
   }
 
   display() {
-    let el = document.createElement("p");
-    el.classList.add(this.color);
-    el.classList.add(this.fill);
-    let text = ""
-    if (this.shape == Shape.DIAMOND) {
-        text = "D";
-    } else if (this.shape == Shape.OVAL) {
-        text = "O";
-    } else {
-        text = "S";
-    }
+        let el = displayTemplate + "";
+        el = el.replaceAll("SHAPE", this.shape);
+        el = el.replaceAll("COLOR", this.color);
+      if (this.fill == Fill.OPEN) {
 
-    text = text.repeat(this.number);
-    el.textContent = text;
-    return el;
+        el = el.replaceAll("OPEN", "open");
+      } else if (this.fill == Fill.LINED) {
+        el = el.replaceAll("FILL", "url(#mask-stripe)");
+      }
+        el = el.replaceAll("FILL", "");
+        el = el.replaceAll("OPEN", "");
+
+        el = el.repeat(this.number);
+      let bigEl = document.createElement("div");
+      bigEl.innerHTML = el;
+        return bigEl;
   }
 }
 
@@ -174,10 +177,10 @@ function removeCards(keys) {
         key = keys[key];
         let el = activeList[key];
         el.classList.toggle("active");
+        let inner = el.children[0];
         const newEl = cards[index].display();
         newEl.setAttribute("index", index);
-        newEl.addEventListener("click", handleClick)
-        el.replaceWith(newEl);
+        inner.replaceWith(newEl);
         index++;
         delete activeList[key];
     }
@@ -191,12 +194,13 @@ function winCheck() {
 
 function handleClick(e) {
     if (paused || document.hidden) {return;}
-    const el = e.target;
-    const index = el.getAttribute("index");
-    el.classList.toggle("active")
+    const cardOuter = this;
+    const cardInner = this.children[0];
+    const index = cardInner.getAttribute("index");
+    cardOuter.classList.toggle("active")
     if (activeList[index] == undefined) {
         if (Object.keys(activeList).length >= 2) {
-            activeList[index] = el;
+            activeList[index] = cardOuter;
             let list = Object.keys(activeList).flatMap((id) => {
                 return cards[id];
             });
@@ -218,7 +222,7 @@ function handleClick(e) {
                 }
             }
         } else {
-            activeList[index] = el;
+            activeList[index] = cardOuter;
         }
     } else {
         delete activeList[index]
@@ -232,8 +236,8 @@ for (let i = 0; i < rows.length; i++) {
         const item = columns[b];
         const el = cards[index].display();
         el.setAttribute("index", index);
-        el.addEventListener("click", handleClick)
         item.append(el);
+        item.addEventListener("click", handleClick)
         index = index + 1;
     }
 }
